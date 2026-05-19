@@ -1,0 +1,15 @@
+# Ignora qualquer arquivo .env
+.env
+
+# Ignora variações como:
+# .env.local
+# .env.dev
+# .env.production
+.env.*
+
+# Mantém arquivos de exemplo/versionados
+!.env.example
+
+**/.env
+**/.env.*
+!.env.example

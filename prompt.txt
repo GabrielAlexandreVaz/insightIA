@@ -1,0 +1,1 @@
+Desenvolva um sistema de análise de dados com IA que aceite arquivos Excel/CSV, processe os dados automaticamente, gere gráficos (tendências, distribuições), identifique padrões e forneça insights em linguagem natural. Inclua backend em Python, frontend web simples, integração com IA, e instruções completas para execução.
