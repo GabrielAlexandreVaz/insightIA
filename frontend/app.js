@@ -148,12 +148,20 @@ function renderResults(data) {
     card.appendChild(plotDiv);
     grid.appendChild(card);
 
-    // Plotly.newPlot sobrescreve layout para altura fixa e sem barra de ferramentas
-    Plotly.newPlot(plotDiv, chart.data.data, {
-      ...chart.data.layout,
-      margin: { t: 30, r: 10, b: 40, l: 50 },
-      height: 320,
-    }, { responsive: true, displayModeBar: false });
+    // Mescla o layout vindo do backend, garantindo altura fixa, autosize e
+    // removendo qualquer título interno (o card já tem um <h4> próprio —
+    // mantê-lo aqui causaria sobreposição visual com o cabeçalho).
+    Plotly.newPlot(
+      plotDiv,
+      chart.data.data,
+      {
+        ...chart.data.layout,
+        title: undefined,
+        autosize: true,
+        height: 340,
+      },
+      { responsive: true, displayModeBar: false }
+    );
   });
 }
 

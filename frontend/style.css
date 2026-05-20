@@ -442,8 +442,10 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.1rem 1rem 0.5rem;
+  padding: 1.1rem 1rem 0.75rem;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  min-width: 0;
 }
 .chart-card h4 {
   font-size: 0.8rem;
@@ -451,8 +453,9 @@ main {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
+.chart-card > div[id^="chart-"] { width: 100%; }
 
 /* ============================================================
    Chat
