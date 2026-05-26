@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!--
+  ============================================================
+  BLOCO: HEAD
+  ------------------------------------------------------------
+  Metadados da página, fonte Inter via Google Fonts, folha de
+  estilo local (style.css) e biblioteca Plotly carregada via CDN
+  para renderizar os gráficos retornados pelo backend.
+  ============================================================
+-->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +20,14 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!--
+    ============================================================
+    BLOCO: TOPBAR (BARRA DE NAVEGAÇÃO SUPERIOR)
+    ------------------------------------------------------------
+    Cabeçalho fixo com a marca "DataInsight AI" e o ícone SVG
+    de barras (gráfico). Permanece visível em todas as telas.
+    ============================================================
+  -->
   <nav class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -27,7 +43,18 @@
 
   <main>
 
-    <!-- ── Upload ── -->
+    <!--
+      ============================================================
+      BLOCO: UPLOAD (TELA INICIAL)
+      ------------------------------------------------------------
+      Primeira tela exibida ao usuário. Contém:
+        • hero com título e descrição do produto
+        • drop-zone para arrastar/soltar ou selecionar arquivo
+        • input file oculto (aceita csv, xlsx, xls, pdf, html, htm, txt)
+        • features-row com os 4 destaques (gráficos, IA, chat, correlações)
+      É escondida via .hidden quando o upload começa.
+      ============================================================
+    -->
     <section id="upload-section" class="upload-page">
       <div class="upload-hero">
         <div class="hero-badge">Powered by OpenAI GPT-4o mini</div>
@@ -70,7 +97,15 @@
       </div>
     </section>
 
-    <!-- ── Loading ── -->
+    <!--
+      ============================================================
+      BLOCO: LOADING (PROCESSAMENTO EM ANDAMENTO)
+      ------------------------------------------------------------
+      Card exibido enquanto o backend processa o arquivo
+      (leitura → summary → gráficos → insights da IA).
+      Mostrado/escondido pelo app.js via classe .hidden.
+      ============================================================
+    -->
     <section id="loading-section" class="hidden">
       <div class="loading-card">
         <div class="spinner"></div>
@@ -79,7 +114,16 @@
       </div>
     </section>
 
-    <!-- ── Error ── -->
+    <!--
+      ============================================================
+      BLOCO: ERROR (FALHA NO PROCESSAMENTO)
+      ------------------------------------------------------------
+      Card exibido quando o /upload ou /chat retorna erro.
+      O texto detalhado é injetado em #error-message pelo app.js,
+      e o botão "Tentar novamente" chama resetUI() para voltar
+      à tela de upload inicial.
+      ============================================================
+    -->
     <section id="error-section" class="hidden">
       <div class="error-card">
         <div class="error-icon-wrap">
@@ -93,10 +137,30 @@
       </div>
     </section>
 
-    <!-- ── Results ── -->
+    <!--
+      ============================================================
+      BLOCO: RESULTS (TELA DE RESULTADOS)
+      ------------------------------------------------------------
+      Container principal da análise. Subdividido em:
+        1. results-header   → nome do arquivo + botão "Nova análise"
+        2. kpi-row          → 4 KPI cards (linhas/colunas ou palavras/etc.)
+        3. insights-card    → texto gerado pela IA (GPT-4o mini)
+        4. summary-details  → tabela de estatísticas (recolhível)
+        5. charts-grid      → gráficos Plotly (apenas modo tabela)
+        6. chat-card        → chat com o assistente sobre o arquivo
+      ============================================================
+    -->
     <section id="results-section" class="hidden">
 
-      <!-- Cabeçalho do resultado -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: Cabeçalho do resultado
+        ----------------------------------------------
+        Mostra o nome do arquivo carregado (#file-name)
+        e os metadados (#file-meta — ex: "Excel · 1500 linhas").
+        Botão "Nova análise" reseta o estado e volta ao upload.
+        ──────────────────────────────────────────────
+      -->
       <div class="results-header">
         <div class="file-info">
           <div class="file-icon-wrap">
@@ -115,7 +179,16 @@
         </button>
       </div>
 
-      <!-- KPI Cards -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: KPI Cards
+        ----------------------------------------------
+        Quatro indicadores que se adaptam ao tipo de arquivo:
+          • Modo tabela: Linhas / Colunas / Numéricas / Com nulos
+          • Modo texto : Palavras / Linhas / Caracteres / Tipo
+        Os valores e rótulos são preenchidos via setKPI() no app.js.
+        ──────────────────────────────────────────────
+      -->
       <div class="kpi-row">
         <div class="kpi-card kpi-blue">
           <span id="kpi-rows" class="kpi-value">—</span>
@@ -135,7 +208,16 @@
         </div>
       </div>
 
-      <!-- Insights da IA -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: Insights da IA
+        ----------------------------------------------
+        Card com o texto gerado pelo GPT-4o mini a partir
+        do summary (modo tabela) ou do conteúdo extraído
+        (modo texto). Conteúdo injetado em #insights-text
+        pelo app.js após a resposta do /upload.
+        ──────────────────────────────────────────────
+      -->
       <div class="card insights-card">
         <div class="card-header">
           <div class="card-header-left">
@@ -149,7 +231,17 @@
         <div id="insights-text" class="insights-body"></div>
       </div>
 
-      <!-- Resumo Estatístico -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: Resumo Estatístico (recolhível)
+        ----------------------------------------------
+        Usa <details>/<summary> nativos para permitir
+        expandir/recolher a tabela. O conteúdo é montado
+        em #summary-table pelo app.js a partir de
+        summary.describe, com rótulos traduzidos para PT-BR
+        via mapa STAT_LABELS (count→Contagem, mean→Média, ...).
+        ──────────────────────────────────────────────
+      -->
       <details class="card summary-details">
         <summary>
           <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
@@ -158,10 +250,31 @@
         <div id="summary-table"></div>
       </details>
 
-      <!-- Gráficos -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: Gráficos (Plotly)
+        ----------------------------------------------
+        Grid populado dinamicamente pelo app.js: para cada
+        item do array `charts` retornado pelo backend é criado
+        um <div> e renderizado com Plotly.newPlot().
+        No modo texto este grid permanece vazio e é escondido.
+        ──────────────────────────────────────────────
+      -->
       <div id="charts-grid" class="charts-grid"></div>
 
-      <!-- Chat -->
+      <!--
+        ──────────────────────────────────────────────
+        Sub-bloco: Chat (Assistente de Dados)
+        ----------------------------------------------
+        Interface de perguntas e respostas sobre o arquivo:
+          • #chat-messages → histórico de balões (usuário/IA)
+          • #chat-input    → campo de texto
+          • #chat-send-btn → dispara sendChatMessage()
+        O histórico é mantido em memória no app.js (limite ~20
+        mensagens) e enviado ao backend a cada requisição,
+        já que /chat é stateless.
+        ──────────────────────────────────────────────
+      -->
       <div class="card chat-card">
         <div class="card-header">
           <div class="card-header-left">
@@ -194,10 +307,27 @@
     </section>
   </main>
 
+  <!--
+    ============================================================
+    BLOCO: FOOTER
+    ------------------------------------------------------------
+    Rodapé simples com a assinatura do produto.
+    ============================================================
+  -->
   <footer class="app-footer">
     <p>DataInsight AI · Análise de dados com inteligência artificial</p>
   </footer>
 
+  <!--
+    ============================================================
+    BLOCO: SCRIPT DA APLICAÇÃO
+    ------------------------------------------------------------
+    Carregado no final do <body> para garantir que o DOM já
+    esteja pronto. Concentra toda a lógica do frontend:
+    upload, chamadas fetch ao backend, renderização de KPIs,
+    insights, tabela de stats, gráficos Plotly e chat.
+    ============================================================
+  -->
   <script src="app.js"></script>
 </body>
 </html>

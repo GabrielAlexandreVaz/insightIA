@@ -135,8 +135,11 @@ function renderResults(data) {
   const grid = document.getElementById("charts-grid");
   grid.innerHTML = "";
   data.charts.forEach((chart, i) => {
+    // Heatmap de correlação ocupa a linha inteira e ganha mais altura
+    const isWide = /correla/i.test(chart.title);
+
     const card = document.createElement("div");
-    card.className = "chart-card";
+    card.className = "chart-card" + (isWide ? " chart-card--wide" : "");
 
     const title = document.createElement("h4");
     title.textContent = chart.title;
@@ -158,7 +161,7 @@ function renderResults(data) {
         ...chart.data.layout,
         title: undefined,
         autosize: true,
-        height: 340,
+        height: isWide ? 420 : 320,
       },
       { responsive: true, displayModeBar: false }
     );

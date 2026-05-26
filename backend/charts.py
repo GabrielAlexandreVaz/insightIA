@@ -25,13 +25,36 @@ PRIMARY_SOFT = "#a5b4fc"
 # Plotly causava sobreposição visual com o cabeçalho do card.
 BASE_LAYOUT = dict(
     template="plotly_white",
-    font=dict(family="Inter, Segoe UI, system-ui, sans-serif", size=12, color="#475569"),
-    margin=dict(t=20, r=20, b=50, l=60),
+    font=dict(family="Inter, Segoe UI, system-ui, sans-serif", size=13, color="#475569"),
+    margin=dict(t=28, r=24, b=58, l=70),
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    hoverlabel=dict(font_family="Inter, Segoe UI, system-ui, sans-serif"),
-    xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0", zerolinecolor="#e2e8f0"),
-    yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0", zerolinecolor="#e2e8f0"),
+    hoverlabel=dict(
+        font_family="Inter, Segoe UI, system-ui, sans-serif",
+        bgcolor="#0f172a",
+        bordercolor="#0f172a",
+        font_color="#ffffff",
+    ),
+    xaxis=dict(
+        gridcolor="#f1f5f9",
+        linecolor="#e2e8f0",
+        zerolinecolor="#e2e8f0",
+        title_font=dict(size=12, color="#64748b"),
+        tickfont=dict(size=11),
+        ticklen=4,
+        tickcolor="#e2e8f0",
+        automargin=True,
+    ),
+    yaxis=dict(
+        gridcolor="#f1f5f9",
+        linecolor="#e2e8f0",
+        zerolinecolor="#e2e8f0",
+        title_font=dict(size=12, color="#64748b"),
+        tickfont=dict(size=11),
+        ticklen=4,
+        tickcolor="#e2e8f0",
+        automargin=True,
+    ),
 )
 
 
@@ -87,7 +110,7 @@ def generate_charts(df: pd.DataFrame) -> list[dict]:
             )
         )
         fig.update_layout(
-            **{**BASE_LAYOUT, "margin": dict(t=20, r=20, b=50, l=140)},
+            **{**BASE_LAYOUT, "margin": dict(t=28, r=24, b=58, l=160)},
             xaxis_title="Ocorrências",
             yaxis_title=None,
         )
@@ -118,9 +141,9 @@ def generate_charts(df: pd.DataFrame) -> list[dict]:
         )
         heatmap_layout = {
             **BASE_LAYOUT,
-            "margin": dict(t=20, r=20, b=90, l=120),
-            "xaxis": {**BASE_LAYOUT["xaxis"], "tickangle": -35, "automargin": True},
-            "yaxis": {**BASE_LAYOUT["yaxis"], "automargin": True},
+            "margin": dict(t=32, r=24, b=100, l=140),
+            "xaxis": {**BASE_LAYOUT["xaxis"], "tickangle": -35},
+            "yaxis": {**BASE_LAYOUT["yaxis"]},
         }
         fig.update_layout(**heatmap_layout)
         charts.append({"title": "Mapa de Correlação", "data": _to_json(fig)})
